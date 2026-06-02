@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordan Intelligence — AI Cyber Protection for Everyone</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0d1b3e;
+  --navy2:#0a1530;
+  --navy3:#071025;
+  --blue:#1a6fc4;
+  --blue2:#2589e8;
+  --steel:#6b8cba;
+  --silver:#9fb3cc;
+  --cyan:#00d4ff;
+  --cyan2:#00aacc;
+  --green:#00e676;
+  --warn:#ffab40;
+  --red:#ff5252;
+  --text:#e8f0fe;
+  --muted:#7a9bc4;
+  --dim:#2a3f6b;
+  --border:#1e3260;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy3);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden}
+
+/* NOISE + GRID */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+background-image:linear-gradient(rgba(0,212,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.035) 1px,transparent 1px);
+background-size:55px 55px}
+
+/* GEAR LOGO SVG */
+.ji-logo{width:44px;height:44px;flex-shrink:0}
+
+/* SCAN */
+.scanline{position:fixed;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scan 7s linear infinite;z-index:1;pointer-events:none;opacity:.6}
+@keyframes scan{0%{top:-1%;opacity:0}8%{opacity:1}92%{opacity:1}100%{top:101%;opacity:0}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:72px;border-bottom:1px solid var(--border);backdrop-filter:blur(24px);background:rgba(7,16,37,.88)}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-wordmark{display:flex;flex-direction:column;line-height:1}
+.nav-jordan{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;color:var(--text);letter-spacing:2px}
+.nav-intel{font-family:'Rajdhani',sans-serif;font-weight:500;font-size:11px;color:var(--cyan);letter-spacing:4px;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;letter-spacing:.5px;transition:color .2s;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:10px 24px;border-radius:6px;font-weight:600;font-size:14px;text-decoration:none;transition:all .2s;letter-spacing:.5px;border:1px solid rgba(0,212,255,.2)}
+.nav-cta:hover{box-shadow:0 0 20px rgba(0,212,255,.3);transform:translateY(-1px)}
+
+/* TICKER */
+.ticker-wrap{background:rgba(13,27,62,.9);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:10px 0;overflow:hidden;position:relative;z-index:5;margin-top:72px}
+.ticker-inner{display:flex;gap:60px;animation:tick 30s linear infinite;white-space:nowrap}
+.ticker-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);flex-shrink:0;font-family:'Barlow',sans-serif;letter-spacing:.3px}
+.tdot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.tdot.r{background:var(--red);box-shadow:0 0 5px var(--red)}.tdot.g{background:var(--green);box-shadow:0 0 5px var(--green)}.tdot.y{background:var(--warn);box-shadow:0 0 5px var(--warn)}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* HERO */
+.hero{position:relative;z-index:5;min-height:calc(100vh - 110px);display:flex;align-items:center;justify-content:center;text-align:center;padding:80px 5%}
+.hero::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(26,111,196,.08) 0%,transparent 65%);pointer-events:none}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);border-radius:4px;padding:6px 16px;font-size:11px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;font-family:'Rajdhani',sans-serif;font-weight:600}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+h1{font-family:'Rajdhani',sans-serif;font-size:clamp(42px,6.5vw,86px);font-weight:700;line-height:1.02;letter-spacing:1px;margin-bottom:20px}
+h1 .accent{color:var(--cyan);text-shadow:0 0 30px rgba(0,212,255,.3)}
+.hero-sub{font-size:clamp(15px,1.8vw,19px);color:var(--muted);max-width:580px;margin:0 auto 36px;line-height:1.7;font-weight:400}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:56px}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:14px 34px;border-radius:6px;font-weight:600;font-size:15px;text-decoration:none;transition:all .2s;border:1px solid rgba(0,212,255,.25);letter-spacing:.5px;font-family:'Rajdhani',sans-serif}
+.btn-primary:hover{box-shadow:0 0 28px rgba(0,212,255,.35);transform:translateY(-2px)}
+.btn-sec{background:transparent;color:var(--text);padding:14px 34px;border-radius:6px;font-weight:500;font-size:15px;text-decoration:none;border:1px solid var(--border);transition:all .2s;letter-spacing:.5px;font-family:'Rajdhani',sans-serif}
+.btn-sec:hover{border-color:var(--cyan);color:var(--cyan)}
+.hero-stats{display:flex;gap:52px;justify-content:center;flex-wrap:wrap}
+.hstat{text-align:center}
+.hstat-n{font-family:'Rajdhani',sans-serif;font-size:36px;font-weight:700;color:var(--cyan)}
+.hstat-l{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.5px}
+.live-count-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:4px;padding:5px 14px;font-size:11px;color:var(--green);margin-bottom:18px;font-family:'Rajdhani',sans-serif;letter-spacing:1px}
+
+/* SECTIONS */
+section{position:relative;z-index:5;padding:96px 5%}
+.sec-tag{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;font-weight:600}
+.sec-title{font-family:'Rajdhani',sans-serif;font-size:clamp(28px,4vw,50px);font-weight:700;letter-spacing:.5px;margin-bottom:14px;line-height:1.1}
+.sec-sub{font-size:16px;color:var(--muted);max-width:540px;line-height:1.7}
+
+/* WHO */
+.who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:52px}
+.who-card{background:linear-gradient(135deg,rgba(13,27,62,.9),rgba(10,21,48,.9));border:1px solid var(--border);border-radius:12px;padding:28px;position:relative;overflow:hidden;transition:all .25s;cursor:default}
+.who-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.who-card.p::before{background:linear-gradient(90deg,var(--cyan),transparent)}
+.who-card.s::before{background:linear-gradient(90deg,var(--green),transparent)}
+.who-card.l::before{background:linear-gradient(90deg,var(--blue2),transparent)}
+.who-card.e::before{background:linear-gradient(90deg,var(--warn),transparent)}
+.who-card:hover{transform:translateY(-4px);border-color:var(--dim)}
+.who-icon{font-size:28px;margin-bottom:14px}
+.who-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;letter-spacing:.5px}
+.who-desc{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:16px}
+.who-price{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700}
+.who-card.p .who-price{color:var(--cyan)}.who-card.s .who-price{color:var(--green)}
+.who-card.l .who-price{color:var(--blue2)}.who-card.e .who-price{color:var(--warn)}
+.who-price span{font-size:14px;font-weight:400;color:var(--muted)}
+
+/* HOW */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;margin-top:52px}
+.how-step{position:relative;padding-left:20px}
+.how-num{font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:var(--border);line-height:1;margin-bottom:10px}
+.how-title{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;margin-bottom:8px;letter-spacing:.5px}
+.how-desc{font-size:14px;color:var(--muted);line-height:1.65}
+
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin-top:52px}
+.feat-card{background:rgba(13,27,62,.7);border:1px solid var(--border);border-radius:10px;padding:22px;display:flex;gap:14px;transition:border-color .2s}
+.feat-card:hover{border-color:var(--steel)}
+.feat-icon{width:42px;height:42px;border-radius:8px;background:rgba(0,212,255,.08);display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.feat-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;margin-bottom:5px;letter-spacing:.3px}
+.feat-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* PLANS */
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:52px}
+.plan-card{background:rgba(13,27,62,.8);border:1px solid var(--border);border-radius:12px;padding:28px;position:relative;overflow:hidden;transition:all .25s}
+.plan-card.featured{border-color:var(--cyan);box-shadow:0 0 40px rgba(0,212,255,.08),inset 0 0 40px rgba(0,212,255,.02)}
+.plan-card:hover{transform:translateY(-3px)}
+.plan-badge{position:absolute;top:14px;right:14px;background:var(--cyan);color:var(--navy3);font-size:10px;font-weight:700;padding:3px 10px;border-radius:3px;letter-spacing:1px;font-family:'Rajdhani',sans-serif}
+.plan-tier{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-family:'Rajdhani',sans-serif}
+.plan-name{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:.5px}
+.plan-for{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.4}
+.plan-price{font-family:'Rajdhani',sans-serif;font-size:44px;font-weight:700;line-height:1;margin-bottom:4px}
+.plan-price sup{font-size:20px;vertical-align:top;margin-top:8px}
+.plan-price sub{font-size:14px;color:var(--muted)}
+.plan-keep{font-size:11px;color:var(--muted);margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.plan-keep em{color:var(--green);font-style:normal}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+.plan-feats li{font-size:13px;display:flex;gap:8px;align-items:flex-start;line-height:1.4}
+.plan-feats li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;font-size:12px;margin-top:1px}
+.plan-feats li.plus::before{content:'◆';color:var(--cyan);font-size:9px;margin-top:3px}
+.plan-btn{display:block;text-align:center;padding:12px;border-radius:6px;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;cursor:pointer;width:100%;font-family:'Rajdhani',sans-serif;letter-spacing:1px;border:none}
+.plan-btn.primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:1px solid rgba(0,212,255,.2)}
+.plan-btn.primary:hover{box-shadow:0 0 20px rgba(0,212,255,.3)}
+.plan-btn.outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.plan-btn.outline:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* TRUST */
+.trust-bar{display:flex;justify-content:center;align-items:center;gap:44px;flex-wrap:wrap;padding:44px 5%;border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:5;background:rgba(13,27,62,.4)}
+.trust-item{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;letter-spacing:.3px}
+.trust-icon{font-size:18px}
+
+/* CTA */
+.cta-wrap{text-align:center;padding:110px 5%;position:relative;z-index:5}
+.cta-wrap::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(26,111,196,.07) 0%,transparent 65%);pointer-events:none}
+.cta-title{font-family:'Rajdhani',sans-serif;font-size:clamp(32px,5vw,62px);font-weight:700;letter-spacing:1px;margin-bottom:14px}
+.cta-sub{font-size:17px;color:var(--muted);margin-bottom:38px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.65}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:36px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;position:relative;z-index:5;background:rgba(7,16,37,.6)}
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px}
+.footer-name span{color:var(--cyan)}
+.footer-copy{font-size:12px;color:var(--muted)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+
+@media(max-width:768px){.nav-links{display:none}.hero-stats{gap:24px}footer{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <!-- JORDAN INTELLIGENCE GEAR LOGO -->
+    <svg class="ji-logo" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#6b8cba"/>
+          <stop offset="100%" stop-color="#2589e8"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0" y1="44" x2="44" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1a6fc4"/>
+          <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+      </defs>
+      <path d="M22 2 L26 6 L30 4 L32 8 L36 8 L36 12 L40 14 L38 18 L42 22 L38 26 L40 30 L36 32 L36 36 L32 36 L30 40 L26 38 L22 42 L18 38 L14 40 L12 36 L8 36 L8 32 L4 30 L6 26 L2 22 L6 18 L4 14 L8 12 L8 8 L12 8 L14 4 L18 6 Z" fill="url(#g1)" opacity=".85"/>
+      <circle cx="22" cy="22" r="9" fill="url(#g2)" opacity=".9"/>
+      <!-- circuit dots -->
+      <circle cx="22" cy="13" r="1.5" fill="#00d4ff"/>
+      <circle cx="29" cy="17" r="1.5" fill="#00d4ff"/>
+      <circle cx="29" cy="27" r="1.5" fill="#00d4ff"/>
+      <circle cx="22" cy="31" r="1.5" fill="#00d4ff"/>
+      <circle cx="15" cy="27" r="1.5" fill="#00d4ff"/>
+      <circle cx="15" cy="17" r="1.5" fill="#00d4ff"/>
+      <!-- circuit lines -->
+      <path d="M22 13 Q29 17 29 22 Q29 27 22 31 Q15 27 15 22 Q15 17 22 13" stroke="#00d4ff" stroke-width="0.8" fill="none" opacity=".5"/>
+      <circle cx="22" cy="22" r="3" fill="#fff" opacity=".9"/>
+    </svg>
+    <div class="nav-wordmark">
+      <div class="nav-jordan">JORDAN</div>
+      <div class="nav-intel">INTELLIGENCE</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#who">Who it's for</a>
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#plans">Plans</a>
+  </div>
+  <a href="signup.html" class="nav-cta">GET PROTECTED →</a>
+</nav>
+
+<!-- LIVE TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <div class="ticker-item"><div class="tdot r"></div>SQL injection blocked — Chicago, IL</div>
+    <div class="ticker-item"><div class="tdot g"></div>New client protected — Austin, TX</div>
+    <div class="ticker-item"><div class="tdot y"></div>Ransomware quarantined — Seattle, WA</div>
+    <div class="ticker-item"><div class="tdot r"></div>Brute force stopped — Miami, FL</div>
+    <div class="ticker-item"><div class="tdot g"></div>Identity threat blocked — Denver, CO</div>
+    <div class="ticker-item"><div class="tdot r"></div>Phishing neutralized — New York, NY</div>
+    <div class="ticker-item"><div class="tdot g"></div>Home network secured — Portland, OR</div>
+    <div class="ticker-item"><div class="tdot y"></div>Insider threat detected — Dallas, TX</div>
+    <div class="ticker-item"><div class="tdot r"></div>Zero-day blocked — Nashville, TN</div>
+    <div class="ticker-item"><div class="tdot g"></div>Enterprise client protected — Atlanta, GA</div>
+    <div class="ticker-item"><div class="tdot r"></div>SQL injection blocked — Chicago, IL</div>
+    <div class="ticker-item"><div class="tdot g"></div>New client protected — Austin, TX</div>
+    <div class="ticker-item"><div class="tdot y"></div>Ransomware quarantined — Seattle, WA</div>
+    <div class="ticker-item"><div class="tdot r"></div>Brute force stopped — Miami, FL</div>
+    <div class="ticker-item"><div class="tdot g"></div>Identity threat blocked — Denver, CO</div>
+    <div class="ticker-item"><div class="tdot r"></div>Phishing neutralized — New York, NY</div>
+    <div class="ticker-item"><div class="tdot g"></div>Home network secured — Portland, OR</div>
+    <div class="ticker-item"><div class="tdot y"></div>Insider threat detected — Dallas, TX</div>
+    <div class="ticker-item"><div class="tdot r"></div>Zero-day blocked — Nashville, TN</div>
+    <div class="ticker-item"><div class="tdot g"></div>Enterprise client protected — Atlanta, GA</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="live-count-badge"><div class="pulse"></div><span id="threat-count">2,847</span> THREATS BLOCKED TODAY</div>
+    <div class="hero-tag"><div class="pulse"></div>24/7 Adaptive AI Cyber Protection</div>
+    <h1>Intelligence that<br>protects <span class="accent">everyone.</span></h1>
+    <p class="hero-sub">Jordan Intelligence is the AI cybersecurity platform built for real people — individuals, families, small businesses, large companies, and enterprise organizations. Always on. Always adapting. Always protecting.</p>
+    <div class="hero-btns">
+      <a href="signup.html" class="btn-primary">START FREE — 30 DAYS →</a>
+      <a href="#plans" class="btn-sec">VIEW PLANS</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n" id="stat-blocked">2,847</div><div class="hstat-l">Threats blocked today</div></div>
+      <div class="hstat"><div class="hstat-n">0.3ms</div><div class="hstat-l">AI response time</div></div>
+      <div class="hstat"><div class="hstat-n">99.9%</div><div class="hstat-l">Uptime guaranteed</div></div>
+      <div class="hstat"><div class="hstat-n">24/7</div><div class="hstat-l">Always watching</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust-bar">
+  <div class="trust-item"><div class="trust-icon">🔒</div>Bank-grade encryption</div>
+  <div class="trust-item"><div class="trust-icon">🧠</div>Human-sense AI engine</div>
+  <div class="trust-item"><div class="trust-icon">⚡</div>Live in 5 minutes</div>
+  <div class="trust-item"><div class="trust-icon">📱</div>Any device, any platform</div>
+  <div class="trust-item"><div class="trust-icon">🇺🇸</div>US-based personal support</div>
+</div>
+
+<!-- WHO -->
+<section id="who">
+  <div class="sec-tag">Who it's for</div>
+  <div class="sec-title">Built for every person.<br>Every organization.</div>
+  <div class="sec-sub">It doesn't matter if you're protecting your family or a hospital — Jordan Intelligence works for you, at a price that makes sense.</div>
+  <div class="who-grid">
+    <div class="who-card p">
+      <div class="who-icon">👤</div>
+      <div class="who-title">Individuals & Families</div>
+      <div class="who-desc">Protect your phone, home WiFi, identity, and personal accounts. Plain-English alerts, no tech knowledge needed. Works on every device.</div>
+      <div class="who-price">$9<span>/month</span></div>
+    </div>
+    <div class="who-card s">
+      <div class="who-icon">🏪</div>
+      <div class="who-title">Small Businesses</div>
+      <div class="who-desc">Dentists, law firms, accountants, local shops. Full network protection, automatic blocking, monthly plain-English reports. 5-minute setup.</div>
+      <div class="who-price">$49<span>/month</span></div>
+    </div>
+    <div class="who-card l">
+      <div class="who-icon">🏢</div>
+      <div class="who-title">Large Businesses</div>
+      <div class="who-desc">Multi-location companies, healthcare networks, manufacturers. Unlimited coverage, compliance reports, dedicated AI model per client.</div>
+      <div class="who-price">$149<span>/month</span></div>
+    </div>
+    <div class="who-card e">
+      <div class="who-icon">🏛️</div>
+      <div class="who-title">Enterprise</div>
+      <div class="who-desc">Hospitals, banks, government contractors, universities. White-label deployment, custom AI training, full compliance audit trail.</div>
+      <div class="who-price">$499<span>/month</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how" style="background:rgba(13,27,62,.3)">
+  <div class="sec-tag">How it works</div>
+  <div class="sec-title">Up and running in minutes.<br>Protected from that moment on.</div>
+  <div class="sec-sub">No IT department. No technical knowledge. No complicated setup. Just real AI protection that starts the moment you sign up.</div>
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="how-num">01</div>
+      <div class="how-title">Pick your plan</div>
+      <div class="how-desc">Choose the plan that fits your situation. Personal, small business, large business, or enterprise. First 30 days completely free — no card required to start.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">02</div>
+      <div class="how-title">Connect in 5 minutes</div>
+      <div class="how-desc">Three simple steps to connect Jordan Intelligence to your devices or network. We walk you through every step in plain English. No IT team needed.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">03</div>
+      <div class="how-title">AI starts watching</div>
+      <div class="how-desc">From the moment you connect, our AI monitors everything 24 hours a day, 7 days a week. It blocks threats automatically — you don't have to do a thing.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">04</div>
+      <div class="how-title">Stay informed</div>
+      <div class="how-desc">Plain-English alerts when something happens. Monthly reports that anyone can understand. You always know exactly what's protecting you.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="sec-tag">What's included</div>
+  <div class="sec-title">Everything you need.<br>Nothing you don't.</div>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="feat-icon">🧠</div><div><div class="feat-title">Human-sense AI engine</div><div class="feat-desc">Reads attacker intent — not just patterns. Thinks like a human expert, reacts in 0.3ms. Gets smarter every single hour.</div></div></div>
+    <div class="feat-card"><div class="feat-icon">⚡</div><div><div class="feat-title">Automatic threat blocking</div><div class="feat-desc">Threats blocked the moment they appear — before they reach you. No waiting, no manual review. Fully automatic, around the clock.</div></div></div>
+    <div class="feat-card"><div class="feat-icon">🔄</div><div><div class="feat-title">Adapts faster than threats</div><div class="feat-desc">Every new attack teaches the system. Model updates deploy automatically. Your protection improves every day without you lifting a finger.</div></div></div>
+    <div class="feat-card"><div class="feat-icon">📊</div><div><div class="feat-title">Plain-English reports</div><div class="feat-desc">Monthly reports anyone can read and understand. No jargon. No tech language. Just a clear picture of what happened and what was stopped.</div></div></div>
+    <div class="feat-card"><div class="feat-icon">📱</div><div><div class="feat-title">Works on every device</div><div class="feat-desc">Phone, tablet, desktop, laptop. iOS and Android. Access your dashboard from anywhere. Your protection moves with you.</div></div></div>
+    <div class="feat-card"><div class="feat-icon">🎯</div><div><div class="feat-title">Predictive protection</div><div class="feat-desc">The AI doesn't just react — it predicts. Threats identified and neutralized before they fully form. Stops attacks before they ever reach you.</div></div></div>
+    <div class="feat-card"><div class="feat-icon">🔔</div><div><div class="feat-title">Real-time alerts</div><div class="feat-desc">Instant notifications the moment something important happens. Email, SMS, or push notification — your choice. Always in plain English.</div></div></div>
+    <div class="feat-card"><div class="feat-icon">🤝</div><div><div class="feat-title">Personal support</div><div class="feat-desc">You get a real person, not a call center. Direct contact with someone who knows your account. Problems solved personally and fast.</div></div></div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section id="plans" style="background:rgba(13,27,62,.3)">
+  <div class="sec-tag">Pricing</div>
+  <div class="sec-title">Simple pricing.<br>No surprises. Ever.</div>
+  <div class="sec-sub">First 30 days free on every plan. No credit card required to start. Cancel any time, no questions asked.</div>
+  <div class="plans-grid">
+    <div class="plan-card">
+      <div class="plan-tier">Personal</div>
+      <div class="plan-name">Personal Shield</div>
+      <div class="plan-for">Individuals and families</div>
+      <div class="plan-price"><sup>$</sup>9<sub>/mo</sub></div>
+      <div class="plan-keep">You keep <em>~$6.74</em> after payment processing</div>
+      <ul class="plan-feats">
+        <li>24/7 device monitoring</li>
+        <li>Identity theft detection</li>
+        <li>Home WiFi protection</li>
+        <li>Up to 6 devices</li>
+        <li>Plain-English alerts</li>
+        <li>Mobile app access</li>
+        <li>30-day free trial</li>
+      </ul>
+      <a href="signup.html?plan=personal" class="plan-btn outline">START FREE →</a>
+    </div>
+    <div class="plan-card featured">
+      <div class="plan-badge">MOST POPULAR</div>
+      <div class="plan-tier">Small Business</div>
+      <div class="plan-name">Business Starter</div>
+      <div class="plan-for">Local businesses and offices</div>
+      <div class="plan-price"><sup>$</sup>49<sub>/mo</sub></div>
+      <div class="plan-keep">You keep <em>~$46.88</em> after payment processing</div>
+      <ul class="plan-feats">
+        <li>24/7 network monitoring</li>
+        <li>Automatic threat blocking</li>
+        <li>Monthly security report</li>
+        <li>Behavioral detection</li>
+        <li>5-minute setup</li>
+        <li>Email and SMS alerts</li>
+        <li class="plus">Direct access to support</li>
+      </ul>
+      <a href="signup.html?plan=small" class="plan-btn primary">START FREE →</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-tier">Large Business</div>
+      <div class="plan-name">Business Pro</div>
+      <div class="plan-for">Growing and multi-location companies</div>
+      <div class="plan-price"><sup>$</sup>149<sub>/mo</sub></div>
+      <div class="plan-keep">You keep <em>~$144.39</em> after payment processing</div>
+      <ul class="plan-feats">
+        <li>Everything in Starter</li>
+        <li class="plus">Unlimited threat volume</li>
+        <li class="plus">Predictive blocking</li>
+        <li class="plus">Insider threat detection</li>
+        <li class="plus">Compliance reports</li>
+        <li class="plus">Dedicated AI model</li>
+        <li class="plus">Priority support line</li>
+      </ul>
+      <a href="signup.html?plan=large" class="plan-btn outline">START FREE →</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-tier">Enterprise</div>
+      <div class="plan-name">Enterprise Fortress</div>
+      <div class="plan-for">Hospitals, banks, institutions</div>
+      <div class="plan-price"><sup>$</sup>499<sub>/mo</sub></div>
+      <div class="plan-keep">You keep <em>~$484.19</em> after payment processing</div>
+      <ul class="plan-feats">
+        <li>Everything in Pro</li>
+        <li class="plus">White-label deployment</li>
+        <li class="plus">Custom AI training</li>
+        <li class="plus">On-premise or cloud</li>
+        <li class="plus">Full audit trail</li>
+        <li class="plus">99.99% SLA uptime</li>
+        <li class="plus">Executive briefings</li>
+      </ul>
+      <a href="signup.html?plan=enterprise" class="plan-btn outline">START FREE →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-wrap">
+  <div class="sec-tag" style="text-align:center">Get started today</div>
+  <div class="cta-title">Start protecting<br>yourself right now.</div>
+  <div class="cta-sub">First 30 days completely free. No credit card. No commitment. Real protection starts in 5 minutes.</div>
+  <a href="signup.html" class="btn-primary" style="font-size:16px;padding:16px 44px;display:inline-block">GET PROTECTED FREE →</a>
+</div>
+
+<footer>
+  <div class="footer-brand">
+    <svg width="28" height="28" viewBox="0 0 44 44" fill="none"><defs><linearGradient id="fg1" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6b8cba"/><stop offset="100%" stop-color="#2589e8"/></linearGradient></defs><path d="M22 2 L26 6 L30 4 L32 8 L36 8 L36 12 L40 14 L38 18 L42 22 L38 26 L40 30 L36 32 L36 36 L32 36 L30 40 L26 38 L22 42 L18 38 L14 40 L12 36 L8 36 L8 32 L4 30 L6 26 L2 22 L6 18 L4 14 L8 12 L8 8 L12 8 L14 4 L18 6 Z" fill="url(#fg1)" opacity=".85"/><circle cx="22" cy="22" r="5" fill="#00d4ff" opacity=".9"/></svg>
+    <div class="footer-name">JORDAN <span>INTELLIGENCE</span></div>
+  </div>
+  <div class="footer-copy">© 2025 Jordan Intelligence. All rights reserved. Always on. Always protecting.</div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="signup.html">Sign up</a>
+    <a href="dashboard.html">Login</a>
+    <a href="admin.html">Owner</a>
+  </div>
+</footer>
+
+<script>
+let count = 2847;
+setInterval(() => {
+  count += Math.floor(Math.random() * 3) + 1;
+  document.getElementById('threat-count').textContent = count.toLocaleString();
+  document.getElementById('stat-blocked').textContent = count.toLocaleString();
+}, 3000);
+</script>
+</body>
+</html>
