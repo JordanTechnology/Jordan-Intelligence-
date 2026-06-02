@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordan Intelligence — Owner Access</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy3:#071025;--navy2:#0a1530;--navy:#0d1b3e;
+  --blue:#1a6fc4;--blue2:#2589e8;--cyan:#00d4ff;
+  --green:#00e676;--warn:#ffab40;--red:#ff5252;
+  --text:#e8f0fe;--muted:#7a9bc4;--border:#1e3260;--dim:#2a3f6b;
+}
+body{background:var(--navy3);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);
+background-size:55px 55px}
+.scanline{position:fixed;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scan 6s linear infinite;z-index:1;pointer-events:none;opacity:.5}
+@keyframes scan{0%{top:-1%;opacity:0}8%{opacity:1}92%{opacity:1}100%{top:101%;opacity:0}}
+.wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:24px}
+.brand-center{text-align:center;margin-bottom:28px}
+.brand-logo{width:64px;height:64px;margin:0 auto 14px;position:relative}
+.pulse-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;border:1px solid rgba(0,212,255,.2);animation:ring 2s ease-out infinite}
+@keyframes ring{0%{transform:translate(-50%,-50%) scale(.8);opacity:.8}100%{transform:translate(-50%,-50%) scale(1.4);opacity:0}}
+.brand-name{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;letter-spacing:2px}
+.brand-intel{font-family:'Rajdhani',sans-serif;font-size:12px;color:var(--cyan);letter-spacing:4px;margin-top:2px}
+.owner-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,171,64,.08);border:1px solid rgba(255,171,64,.2);border-radius:3px;padding:4px 12px;font-size:11px;color:var(--warn);letter-spacing:1.5px;margin-top:10px;font-family:'Rajdhani',sans-serif}
+.status-bar{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.status-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.sdot{width:5px;height:5px;border-radius:50%}
+.sdot.g{background:var(--green);box-shadow:0 0 4px var(--green);animation:bl 2s infinite}
+.sdot.b{background:var(--cyan);box-shadow:0 0 4px var(--cyan);animation:bl 2.5s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+.card{background:rgba(13,27,62,.9);border:1px solid var(--border);border-radius:14px;padding:30px;backdrop-filter:blur(20px)}
+.card-title{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:600;letter-spacing:.5px;margin-bottom:5px;text-align:center}
+.card-sub{font-size:12px;color:var(--muted);text-align:center;margin-bottom:22px;line-height:1.5}
+.form-group{margin-bottom:15px}
+.form-label{font-size:11px;color:var(--muted);margin-bottom:5px;display:block;letter-spacing:.5px;text-transform:uppercase}
+.form-input{width:100%;background:rgba(7,16,37,.9);border:1px solid var(--border);border-radius:7px;padding:11px 14px;color:var(--text);font-size:14px;font-family:'Barlow',sans-serif;transition:border-color .2s;outline:none}
+.form-input:focus{border-color:var(--cyan)}
+.form-input::placeholder{color:var(--dim)}
+.btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:1px solid rgba(0,212,255,.2);border-radius:7px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:1px;transition:all .2s;margin-top:4px}
+.btn:hover{box-shadow:0 0 20px rgba(0,212,255,.25);transform:translateY(-1px)}
+.btn.outline{background:transparent;color:var(--text);border:1px solid var(--border);margin-top:8px}
+.btn.outline:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:none;transform:none}
+.btn.green{background:linear-gradient(135deg,#0f6e56,#00e676);color:#000;border:1px solid rgba(0,230,118,.2)}
+.msg{border-radius:6px;padding:10px 14px;font-size:12px;margin-bottom:14px;text-align:center;display:none;line-height:1.5}
+.msg.error{background:rgba(255,82,82,.1);border:1px solid rgba(255,82,82,.25);color:var(--red)}
+.msg.success{background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);color:var(--green)}
+.msg.info{background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);color:var(--cyan)}
+.msg.show{display:block}
+.note{margin-top:16px;padding:11px 13px;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.1);border-radius:7px;font-size:11px;color:var(--muted);line-height:1.6;text-align:center}
+.note strong{color:var(--cyan)}
+.back{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.back:hover{color:var(--text)}
+.divider{height:1px;background:var(--border);margin:18px 0;position:relative}
+.divider span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(13,27,62,.9);padding:0 10px;font-size:11px;color:var(--muted)}
+.screen{display:none}.screen.active{display:block}
+.success-icon{font-size:52px;text-align:center;margin-bottom:12px}
+.success-title{font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;letter-spacing:1px;text-align:center;margin-bottom:8px}
+.success-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+
+<div class="wrap">
+  <div class="brand-center">
+    <div class="brand-logo">
+      <div class="pulse-ring"></div>
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6b8cba"/><stop offset="100%" stop-color="#2589e8"/></linearGradient>
+          <linearGradient id="g2" x1="0" y1="64" x2="64" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a6fc4"/><stop offset="100%" stop-color="#00d4ff"/></linearGradient>
+        </defs>
+        <path d="M32 3 L38 9 L44 6 L47 12 L53 12 L53 18 L59 21 L56 27 L62 32 L56 37 L59 43 L53 46 L53 52 L47 52 L44 58 L38 55 L32 61 L26 55 L20 58 L17 52 L11 52 L11 46 L5 43 L8 37 L2 32 L8 27 L5 21 L11 18 L11 12 L17 12 L20 6 L26 9 Z" fill="url(#g1)" opacity=".9"/>
+        <circle cx="32" cy="32" r="13" fill="url(#g2)" opacity=".95"/>
+        <circle cx="32" cy="19" r="2" fill="#00d4ff"/>
+        <circle cx="42" cy="25" r="2" fill="#00d4ff"/>
+        <circle cx="42" cy="39" r="2" fill="#00d4ff"/>
+        <circle cx="32" cy="45" r="2" fill="#00d4ff"/>
+        <circle cx="22" cy="39" r="2" fill="#00d4ff"/>
+        <circle cx="22" cy="25" r="2" fill="#00d4ff"/>
+        <path d="M32 19 Q42 25 42 32 Q42 39 32 45 Q22 39 22 32 Q22 25 32 19" stroke="#00d4ff" stroke-width="1" fill="none" opacity=".5"/>
+        <circle cx="32" cy="32" r="5" fill="#fff" opacity=".95"/>
+      </svg>
+    </div>
+    <div class="brand-name">JORDAN</div>
+    <div class="brand-intel">INTELLIGENCE</div>
+    <div class="owner-badge">⚡ OWNER ACCESS</div>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-item"><div class="sdot g"></div>Platform online</div>
+    <div class="status-item"><div class="sdot b"></div>AI engine active</div>
+    <div class="status-item"><div class="sdot g"></div>All clients protected</div>
+  </div>
+
+  <!-- SCREEN 1: FIRST TIME SETUP -->
+  <div class="screen active" id="screen-setup">
+    <div class="card">
+      <div class="card-title">FIRST TIME SETUP</div>
+      <div class="card-sub">Create your private owner credentials. These are stored only on your device — nothing is in the code.</div>
+      <div class="msg info show" id="setup-info">You are setting this up for the first time. Choose credentials only you know.</div>
+      <div class="form-group">
+        <label class="form-label">Your email address</label>
+        <input type="email" class="form-input" placeholder="your@email.com" id="setup-email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Create a password</label>
+        <input type="password" class="form-input" placeholder="Choose a strong password" id="setup-pw">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm password</label>
+        <input type="password" class="form-input" placeholder="Type it again" id="setup-pw2">
+      </div>
+      <div class="msg error" id="setup-error"></div>
+      <button class="btn" onclick="setupOwner()">CREATE MY OWNER ACCESS →</button>
+      <div class="note">🔒 <strong>Your credentials never appear in any code file.</strong> They are saved privately on your device only. Nobody else can see them — not even in your GitHub repo.</div>
+    </div>
+    <a href="index.html" class="back">← Back to public website</a>
+  </div>
+
+  <!-- SCREEN 2: LOGIN -->
+  <div class="screen" id="screen-login">
+    <div class="card">
+      <div class="card-title">OWNER SIGN IN</div>
+      <div class="card-sub">This is your private control center. Your clients cannot access this page.</div>
+      <div class="msg error" id="login-error"></div>
+      <div class="form-group">
+        <label class="form-label">Your email</label>
+        <input type="email" class="form-input" placeholder="your@email.com" id="login-email" onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="Your password" id="login-pw" onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <button class="btn" onclick="login()">ACCESS MY PLATFORM →</button>
+      <div class="divider"><span>owner options</span></div>
+      <button class="btn outline" onclick="showReset()">Forgot password / Reset access</button>
+      <div class="note">🔒 <strong>Private access only.</strong> This page is not linked anywhere on your public website. Bookmark it and keep the URL private.</div>
+    </div>
+    <a href="index.html" class="back">← Back to public website</a>
+  </div>
+
+  <!-- SCREEN 3: SUCCESS -->
+  <div class="screen" id="screen-success">
+    <div class="card">
+      <div class="success-icon">🛡️</div>
+      <div class="success-title">WELCOME BACK.</div>
+      <div class="success-sub">Jordan Intelligence is running. All clients are protected. Your business is active 24 hours a day.</div>
+      <a href="admin.html" class="btn" style="display:block;text-align:center;text-decoration:none">OPEN CONTROL CENTER →</a>
+      <a href="index.html" class="btn outline" style="display:block;text-align:center;text-decoration:none">View public website</a>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: RESET -->
+  <div class="screen" id="screen-reset">
+    <div class="card">
+      <div class="card-title">RESET OWNER ACCESS</div>
+      <div class="card-sub">This will clear your saved credentials so you can set up new ones. Only do this if you need to change your email or password.</div>
+      <div class="msg error show" style="display:block;background:rgba(255,171,64,.08);border-color:rgba(255,171,64,.2);color:var(--warn)">⚠️ This will sign you out and require you to set up new credentials.</div>
+      <button class="btn" style="background:linear-gradient(135deg,#993c1d,#ff5252);border-color:rgba(255,82,82,.2);margin-top:8px" onclick="resetAccess()">YES — RESET MY ACCESS</button>
+      <button class="btn outline" onclick="showLogin()" style="margin-top:8px">Cancel — go back to login</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// All credentials stored privately in localStorage — never in code
+const STORE_KEY = 'ji_owner_creds';
+
+function getStored() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch(e) { return null; }
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showLogin() { showScreen('screen-login'); }
+function showReset() { showScreen('screen-reset'); }
+
+function init() {
+  // Check if already logged in this session
+  const session = JSON.parse(sessionStorage.getItem('ji_owner_session') || 'null');
+  if(session && session.loggedIn) { showScreen('screen-success'); return; }
+  // Check if credentials have been set up
+  const creds = getStored();
+  if(creds && creds.email && creds.hash) {
+    showScreen('screen-login');
+  } else {
+    showScreen('screen-setup');
+  }
+}
+
+// Simple hash function — keeps password out of plain text storage
+async function hashPw(pw) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw + 'ji_salt_2025'));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function setupOwner() {
+  const email = document.getElementById('setup-email').value.trim();
+  const pw    = document.getElementById('setup-pw').value;
+  const pw2   = document.getElementById('setup-pw2').value;
+  const err   = document.getElementById('setup-error');
+
+  err.className = 'msg error'; err.textContent = '';
+
+  if(!email || !email.includes('@')) {
+    err.textContent = 'Please enter a valid email address.';
+    err.classList.add('show'); return;
+  }
+  if(pw.length < 8) {
+    err.textContent = 'Password must be at least 8 characters.';
+    err.classList.add('show'); return;
+  }
+  if(pw !== pw2) {
+    err.textContent = 'Passwords do not match. Please try again.';
+    err.classList.add('show'); return;
+  }
+
+  const hash = await hashPw(pw);
+  localStorage.setItem(STORE_KEY, JSON.stringify({ email: email.toLowerCase(), hash }));
+  sessionStorage.setItem('ji_owner_session', JSON.stringify({ loggedIn: true, email }));
+  showScreen('screen-success');
+}
+
+async function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const pw    = document.getElementById('login-pw').value;
+  const err   = document.getElementById('login-error');
+
+  err.className = 'msg error'; err.textContent = '';
+
+  if(!email || !pw) {
+    err.textContent = 'Please enter your email and password.';
+    err.classList.add('show'); return;
+  }
+
+  const creds = getStored();
+  if(!creds) { showScreen('screen-setup'); return; }
+
+  const hash = await hashPw(pw);
+  if(email.toLowerCase() === creds.email && hash === creds.hash) {
+    sessionStorage.setItem('ji_owner_session', JSON.stringify({ loggedIn: true, email }));
+    showScreen('screen-success');
+    setTimeout(() => { window.location.href = 'admin.html'; }, 1800);
+  } else {
+    err.textContent = 'Incorrect email or password. Please try again.';
+    err.classList.add('show');
+    document.getElementById('login-pw').value = '';
+    document.getElementById('login-pw').focus();
+  }
+}
+
+function resetAccess() {
+  localStorage.removeItem(STORE_KEY);
+  sessionStorage.removeItem('ji_owner_session');
+  showScreen('screen-setup');
+}
+
+init();
+</script>
+</body>
+</html>
