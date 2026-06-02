@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordan Intelligence — Get Protected</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0d1b3e;--navy2:#0a1530;--navy3:#071025;--blue:#1a6fc4;--blue2:#2589e8;--steel:#6b8cba;--silver:#9fb3cc;--cyan:#00d4ff;--cyan2:#00aacc;--green:#00e676;--warn:#ffab40;--red:#ff5252;--text:#e8f0fe;--muted:#7a9bc4;--dim:#2a3f6b;--border:#1e3260;}
+body{background:var(--navy3);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:55px 55px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:72px;border-bottom:1px solid var(--border);backdrop-filter:blur(24px);background:rgba(7,16,37,.88)}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-wordmark{display:flex;flex-direction:column;line-height:1}
+.nav-jordan{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;color:var(--text);letter-spacing:2px}
+.nav-intel{font-family:'Rajdhani',sans-serif;font-weight:500;font-size:10px;color:var(--cyan);letter-spacing:4px}
+.back{font-size:13px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s;letter-spacing:.3px}
+.back:hover{color:var(--text)}
+.page{position:relative;z-index:5;padding:100px 5% 60px;max-width:980px;margin:0 auto}
+.page-title{font-family:'Rajdhani',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:1px;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--muted);margin-bottom:44px}
+.plans-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:36px}
+.plan-opt{border:2px solid var(--border);border-radius:10px;padding:18px;cursor:pointer;transition:all .2s;background:rgba(13,27,62,.7);position:relative}
+.plan-opt:hover{border-color:var(--steel)}
+.plan-opt.sel{border-color:var(--cyan);background:rgba(0,212,255,.05)}
+.plan-opt.sel::after{content:'✓';position:absolute;top:10px;right:12px;width:20px;height:20px;background:var(--cyan);border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--navy3)}
+.plan-opt-icon{font-size:18px;margin-bottom:8px}
+.plan-opt-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;margin-bottom:2px}
+.plan-opt-for{font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.3}
+.plan-opt-price{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700}
+.plan-opt.p .plan-opt-price{color:var(--cyan)}.plan-opt.s .plan-opt-price{color:var(--green)}.plan-opt.l .plan-opt-price{color:var(--blue2)}.plan-opt.e .plan-opt-price{color:var(--warn)}
+.plan-opt-price span{font-size:12px;font-weight:400;color:var(--muted)}
+.form-wrap{background:rgba(13,27,62,.8);border:1px solid var(--border);border-radius:14px;padding:34px;max-width:520px}
+.form-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:.5px;margin-bottom:22px}
+.form-group{margin-bottom:18px}
+.form-label{font-size:12px;color:var(--muted);margin-bottom:6px;display:block;letter-spacing:.5px;text-transform:uppercase}
+.form-input{width:100%;background:rgba(7,16,37,.8);border:1px solid var(--border);border-radius:7px;padding:11px 14px;color:var(--text);font-size:14px;font-family:'Barlow',sans-serif;transition:border-color .2s;outline:none}
+.form-input:focus{border-color:var(--cyan)}
+.form-input::placeholder{color:var(--dim)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-select{width:100%;background:rgba(7,16,37,.8);border:1px solid var(--border);border-radius:7px;padding:11px 14px;color:var(--text);font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border-color .2s;cursor:pointer}
+.form-select:focus{border-color:var(--cyan)}
+.free-badge{background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:7px;padding:11px 14px;font-size:13px;color:var(--green);margin-bottom:22px;display:flex;align-items:center;gap:8px}
+.submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:1px solid rgba(0,212,255,.2);border-radius:7px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:1px;transition:all .2s}
+.submit-btn:hover{box-shadow:0 0 20px rgba(0,212,255,.3);transform:translateY(-1px)}
+.form-note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.5}
+.divider{height:1px;background:var(--border);margin:22px 0;position:relative}
+.divider::before{content:'or';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(13,27,62,.8);padding:0 12px;font-size:12px;color:var(--muted)}
+.login-link{display:block;text-align:center;font-size:14px;color:var(--muted)}
+.login-link a{color:var(--cyan);text-decoration:none}
+.success-screen{display:none;text-align:center;padding:60px 20px}
+.success-icon{font-size:64px;margin-bottom:20px}
+.success-title{font-family:'Rajdhani',sans-serif;font-size:36px;font-weight:700;letter-spacing:1px;margin-bottom:12px}
+.success-sub{font-size:16px;color:var(--muted);margin-bottom:32px;line-height:1.65;max-width:420px;margin-left:auto;margin-right:auto}
+.dash-btn{display:inline-block;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:14px 36px;border-radius:7px;font-weight:700;font-size:16px;text-decoration:none;font-family:'Rajdhani',sans-serif;letter-spacing:1px;border:1px solid rgba(0,212,255,.2);transition:all .2s}
+.dash-btn:hover{box-shadow:0 0 20px rgba(0,212,255,.3)}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <a href="index.html" class="nav-brand">
+    <svg width="32" height="32" viewBox="0 0 44 44" fill="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6b8cba"/><stop offset="100%" stop-color="#2589e8"/></linearGradient><linearGradient id="g2" x1="0" y1="44" x2="44" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a6fc4"/><stop offset="100%" stop-color="#00d4ff"/></linearGradient></defs><path d="M22 2 L26 6 L30 4 L32 8 L36 8 L36 12 L40 14 L38 18 L42 22 L38 26 L40 30 L36 32 L36 36 L32 36 L30 40 L26 38 L22 42 L18 38 L14 40 L12 36 L8 36 L8 32 L4 30 L6 26 L2 22 L6 18 L4 14 L8 12 L8 8 L12 8 L14 4 L18 6 Z" fill="url(#g1)" opacity=".85"/><circle cx="22" cy="22" r="9" fill="url(#g2)" opacity=".9"/><circle cx="22" cy="13" r="1.5" fill="#00d4ff"/><circle cx="29" cy="17" r="1.5" fill="#00d4ff"/><circle cx="29" cy="27" r="1.5" fill="#00d4ff"/><circle cx="22" cy="31" r="1.5" fill="#00d4ff"/><circle cx="15" cy="27" r="1.5" fill="#00d4ff"/><circle cx="15" cy="17" r="1.5" fill="#00d4ff"/><path d="M22 13 Q29 17 29 22 Q29 27 22 31 Q15 27 15 22 Q15 17 22 13" stroke="#00d4ff" stroke-width="0.8" fill="none" opacity=".5"/><circle cx="22" cy="22" r="3" fill="#fff" opacity=".9"/></svg>
+    <div class="nav-wordmark"><div class="nav-jordan">JORDAN</div><div class="nav-intel">INTELLIGENCE</div></div>
+  </a>
+  <a href="index.html" class="back">← Back to home</a>
+</nav>
+<div class="page">
+  <div id="main-form">
+    <div class="page-title">Get protected today.</div>
+    <div class="page-sub">First 30 days completely free. No credit card required. Cancel any time.</div>
+    <div class="plans-row">
+      <div class="plan-opt p" onclick="selPlan('personal',this)"><div class="plan-opt-icon">👤</div><div class="plan-opt-name">PERSONAL SHIELD</div><div class="plan-opt-for">Individuals & families</div><div class="plan-opt-price">$9<span>/mo</span></div></div>
+      <div class="plan-opt s sel" onclick="selPlan('small',this)"><div class="plan-opt-icon">🏪</div><div class="plan-opt-name">BUSINESS STARTER</div><div class="plan-opt-for">Small businesses</div><div class="plan-opt-price">$49<span>/mo</span></div></div>
+      <div class="plan-opt l" onclick="selPlan('large',this)"><div class="plan-opt-icon">🏢</div><div class="plan-opt-name">BUSINESS PRO</div><div class="plan-opt-for">Large businesses</div><div class="plan-opt-price">$149<span>/mo</span></div></div>
+      <div class="plan-opt e" onclick="selPlan('enterprise',this)"><div class="plan-opt-icon">🏛️</div><div class="plan-opt-name">ENTERPRISE FORTRESS</div><div class="plan-opt-for">Enterprise & institutions</div><div class="plan-opt-price">$499<span>/mo</span></div></div>
+    </div>
+    <div class="form-wrap">
+      <div class="form-title">CREATE YOUR ACCOUNT</div>
+      <div class="free-badge">🛡️ Your first 30 days are completely free — no card needed to start</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First name</label><input type="text" class="form-input" placeholder="John" id="fname"></div>
+        <div class="form-group"><label class="form-label">Last name</label><input type="text" class="form-input" placeholder="Smith" id="lname"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email address</label><input type="email" class="form-input" placeholder="you@example.com" id="email"></div>
+      <div class="form-group" id="biz-group" style="display:none"><label class="form-label">Business name</label><input type="text" class="form-input" placeholder="Your Business LLC" id="bizname"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" placeholder="At least 8 characters" id="password"></div>
+      <div class="form-group"><label class="form-label">How did you hear about us?</label>
+        <select class="form-select" id="source"><option value="">Select one...</option><option>Social media</option><option>Referred by someone</option><option>Online search</option><option>Email</option><option>Other</option></select>
+      </div>
+      <button class="submit-btn" onclick="signup()">START MY FREE 30 DAYS →</button>
+      <div class="form-note">By signing up you agree to our Terms of Service and Privacy Policy. No spam. No surprises. Cancel any time.</div>
+      <div class="divider"></div>
+      <div class="login-link">Already have an account? <a href="dashboard.html">Log in →</a></div>
+    </div>
+  </div>
+  <div class="success-screen" id="success">
+    <div class="success-icon">🛡️</div>
+    <div class="success-title">YOU'RE PROTECTED.</div>
+    <div class="success-sub">Your Jordan Intelligence account is active. AI protection starts right now — 24 hours a day, 7 days a week, automatically.</div>
+    <a href="dashboard.html" class="dash-btn">OPEN MY DASHBOARD →</a>
+  </div>
+</div>
+<script>
+let selectedPlan='small';
+const params=new URLSearchParams(window.location.search);
+const urlPlan=params.get('plan');
+if(urlPlan){document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('sel'));const map={personal:'.p',small:'.s',large:'.l',enterprise:'.e'};if(map[urlPlan]){document.querySelector(map[urlPlan]).classList.add('sel');selectedPlan=urlPlan;updateForm(urlPlan);}}
+function selPlan(plan,el){document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');selectedPlan=plan;updateForm(plan);}
+function updateForm(plan){document.getElementById('biz-group').style.display=['small','large','enterprise'].includes(plan)?'block':'none';}
+function signup(){
+  const fname=document.getElementById('fname').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const pw=document.getElementById('password').value;
+  if(!fname){alert('Please enter your first name.');return}
+  if(!email||!email.includes('@')){alert('Please enter a valid email address.');return}
+  if(pw.length<8){alert('Password must be at least 8 characters.');return}
+  localStorage.setItem('ji_user',JSON.stringify({name:fname+' '+document.getElementById('lname').value.trim(),email,plan:selectedPlan,bizname:document.getElementById('bizname').value.trim(),joined:new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),trialDays:30}));
+  document.getElementById('main-form').style.display='none';
+  document.getElementById('success').style.display='block';
+}
+updateForm('small');
+</script>
+</body>
+</html>
