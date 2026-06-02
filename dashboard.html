@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordan Intelligence — My Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0d1b3e;--navy2:#0a1530;--navy3:#071025;--blue:#1a6fc4;--blue2:#2589e8;--steel:#6b8cba;--cyan:#00d4ff;--green:#00e676;--warn:#ffab40;--red:#ff5252;--text:#e8f0fe;--muted:#7a9bc4;--dim:#2a3f6b;--border:#1e3260;}
+body{background:var(--navy3);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;display:flex}
+.sidebar{width:244px;flex-shrink:0;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50}
+.sb-brand{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-name{display:flex;flex-direction:column;line-height:1}
+.sb-jordan{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;letter-spacing:1.5px}
+.sb-intel{font-family:'Rajdhani',sans-serif;font-size:9px;color:var(--cyan);letter-spacing:3px}
+.sb-nav{flex:1;padding:14px 0;overflow-y:auto}
+.nav-sec{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);padding:10px 18px 5px;font-family:'Rajdhani',sans-serif}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;border-left:2px solid transparent;text-decoration:none;letter-spacing:.3px}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,.025)}
+.nav-item.active{color:var(--cyan);background:rgba(0,212,255,.05);border-left-color:var(--cyan)}
+.nav-icon{font-size:15px;width:20px;flex-shrink:0}
+.sb-user{padding:14px 18px;border-top:1px solid var(--border)}
+.user-row{display:flex;align-items:center;gap:10px}
+.user-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
+.user-name{font-size:13px;font-weight:500}
+.user-plan{font-size:11px;color:var(--muted)}
+.logout{margin-top:8px;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Barlow',sans-serif;padding:4px 0;transition:color .15s;letter-spacing:.3px}
+.logout:hover{color:var(--red)}
+.main{margin-left:244px;flex:1;padding:26px;min-height:100vh}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.top-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:.5px}
+.status-pill{display:flex;align-items:center;gap:6px;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:4px;padding:6px 14px;font-size:11px;color:var(--green);font-family:'Rajdhani',sans-serif;letter-spacing:1px}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:bl 2s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
+.trial-banner{background:linear-gradient(135deg,rgba(26,111,196,.12),rgba(0,212,255,.05));border:1px solid rgba(0,212,255,.2);border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px}
+.trial-text{font-size:14px}.trial-days{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--cyan);margin-right:5px}
+.upgrade-btn{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;border:none;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;transition:all .2s}
+.upgrade-btn:hover{box-shadow:0 0 14px rgba(0,212,255,.3)}
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:22px}
+.kc{background:rgba(13,27,62,.8);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kc.c1::before{background:var(--cyan)}.kc.c2::before{background:var(--green)}.kc.c3::before{background:#7b5ea7}.kc.c4::before{background:var(--warn)}
+.kl{font-size:10px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.kv{font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;line-height:1}
+.kv.c1{color:var(--cyan)}.kv.c2{color:var(--green)}.kv.c3{color:#a78bfa}.kv.c4{color:var(--warn)}
+.ks{font-size:11px;color:var(--muted);margin-top:3px}
+.grid2{display:grid;grid-template-columns:1fr 320px;gap:14px;margin-bottom:14px}
+.full{grid-column:1/-1}
+.card{background:rgba(13,27,62,.8);border:1px solid var(--border);border-radius:10px;padding:18px}
+.card-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ctag{font-size:10px;padding:2px 8px;border-radius:3px;background:rgba(0,230,118,.1);color:var(--green);font-weight:400;letter-spacing:.5px}
+.feed{display:flex;flex-direction:column;gap:7px}
+.fi{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;background:rgba(7,16,37,.7);border-radius:7px;border-left:2px solid transparent}
+.fi.cr{border-left-color:var(--red)}.fi.hi{border-left-color:var(--warn)}.fi.md{border-left-color:#7b5ea7}.fi.lo{border-left-color:var(--dim)}
+.sv{font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px;white-space:nowrap;margin-top:2px;letter-spacing:.5px;text-transform:uppercase}
+.scr{background:rgba(255,82,82,.15);color:#ff5252}.shi{background:rgba(255,171,64,.15);color:#ffab40}.smd{background:rgba(123,94,167,.15);color:#a78bfa}.slo{background:rgba(42,63,107,.4);color:var(--muted)}
+.fn{font-size:12px;font-weight:500;margin-bottom:2px}.fs{font-size:11px;color:var(--muted);font-family:monospace}
+.fstat{font-size:10px;color:var(--green);font-weight:600;white-space:nowrap;margin-left:auto;align-self:center;flex-shrink:0}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar-row{display:flex;align-items:center;gap:9px}
+.bar-lbl{font-size:11px;color:var(--muted);width:115px;flex-shrink:0}
+.bar-track{flex:1;height:4px;background:rgba(7,16,37,.7);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px}
+.bar-val{font-size:11px;font-family:monospace;width:32px;text-align:right;flex-shrink:0;color:var(--muted)}
+.hsgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px;padding-top:13px;border-top:1px solid var(--border)}
+.hsc{background:rgba(7,16,37,.6);border-radius:7px;padding:10px}
+.ht{font-size:12px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:.3px;margin-bottom:2px}
+.hd{font-size:11px;color:var(--muted);line-height:1.4}
+.act-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.act-btn{background:rgba(7,16,37,.7);border:1px solid var(--border);border-radius:7px;padding:12px;cursor:pointer;transition:all .15s;text-align:left;font-family:'Barlow',sans-serif}
+.act-btn:hover{border-color:var(--cyan);background:rgba(0,212,255,.04)}
+.act-icon{font-size:16px;margin-bottom:5px}
+.act-label{font-size:12px;font-weight:500;color:var(--text);display:block;font-family:'Rajdhani',sans-serif;letter-spacing:.3px}
+.act-sub{font-size:11px;color:var(--muted)}
+.pg{display:none}.pg.on{display:block}
+.set-sec{margin-bottom:26px}
+.set-title{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;letter-spacing:.5px;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.set-row:last-child{border-bottom:none}
+.set-label{font-size:13px;font-weight:500}
+.set-desc{font-size:11px;color:var(--muted);margin-top:2px}
+.toggle{width:42px;height:22px;background:var(--dim);border-radius:11px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--cyan)}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s}
+.toggle.on::after{left:23px}
+.set-input{background:rgba(7,16,37,.8);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:13px;font-family:'Barlow',sans-serif;outline:none;width:180px}
+.set-input:focus{border-color:var(--cyan)}
+.save-btn{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:9px 22px;border-radius:6px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;transition:all .2s}
+.save-btn:hover{box-shadow:0 0 14px rgba(0,212,255,.3)}
+.rep-list{display:flex;flex-direction:column;gap:9px}
+.rep-item{display:flex;align-items:center;gap:12px;padding:12px;background:rgba(7,16,37,.7);border-radius:7px;cursor:pointer;transition:background .15s}
+.rep-item:hover{background:rgba(7,16,37,.9)}
+.rep-icon{font-size:18px;flex-shrink:0}
+.rep-name{font-size:13px;font-weight:500;font-family:'Rajdhani',sans-serif;letter-spacing:.3px;margin-bottom:2px}
+.rep-meta{font-size:11px;color:var(--muted)}
+.rep-dl{font-size:11px;color:var(--cyan);margin-left:auto;letter-spacing:.3px}
+.dev-list{display:flex;flex-direction:column;gap:8px}
+.dev-item{display:flex;align-items:center;gap:12px;padding:12px;background:rgba(7,16,37,.7);border-radius:7px;border-left:2px solid var(--green)}
+.add-dev-btn{margin-top:14px;background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 18px;border-radius:7px;font-size:13px;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;transition:all .2s}
+.add-dev-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sb-brand">
+    <svg width="30" height="30" viewBox="0 0 44 44" fill="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6b8cba"/><stop offset="100%" stop-color="#2589e8"/></linearGradient><linearGradient id="g2" x1="0" y1="44" x2="44" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a6fc4"/><stop offset="100%" stop-color="#00d4ff"/></linearGradient></defs><path d="M22 2 L26 6 L30 4 L32 8 L36 8 L36 12 L40 14 L38 18 L42 22 L38 26 L40 30 L36 32 L36 36 L32 36 L30 40 L26 38 L22 42 L18 38 L14 40 L12 36 L8 36 L8 32 L4 30 L6 26 L2 22 L6 18 L4 14 L8 12 L8 8 L12 8 L14 4 L18 6 Z" fill="url(#g1)" opacity=".85"/><circle cx="22" cy="22" r="9" fill="url(#g2)" opacity=".9"/><circle cx="22" cy="13" r="1.5" fill="#00d4ff"/><circle cx="29" cy="17" r="1.5" fill="#00d4ff"/><circle cx="29" cy="27" r="1.5" fill="#00d4ff"/><circle cx="22" cy="31" r="1.5" fill="#00d4ff"/><circle cx="15" cy="27" r="1.5" fill="#00d4ff"/><circle cx="15" cy="17" r="1.5" fill="#00d4ff"/><path d="M22 13 Q29 17 29 22 Q29 27 22 31 Q15 27 15 22 Q15 17 22 13" stroke="#00d4ff" stroke-width="0.8" fill="none" opacity=".5"/><circle cx="22" cy="22" r="3" fill="#fff" opacity=".9"/></svg>
+    <div class="sb-name"><div class="sb-jordan">JORDAN</div><div class="sb-intel">INTELLIGENCE</div></div>
+  </div>
+  <nav class="sb-nav">
+    <div class="nav-sec">Main</div>
+    <a class="nav-item active" onclick="showPg('overview',this)"><div class="nav-icon">⬡</div>Overview</a>
+    <a class="nav-item" onclick="showPg('threats',this)"><div class="nav-icon">⚡</div>Threat feed</a>
+    <a class="nav-item" onclick="showPg('reports',this)"><div class="nav-icon">📊</div>Reports</a>
+    <div class="nav-sec">Account</div>
+    <a class="nav-item" onclick="showPg('devices',this)"><div class="nav-icon">📱</div>My devices</a>
+    <a class="nav-item" onclick="showPg('settings',this)"><div class="nav-icon">⚙️</div>Settings</a>
+    <a class="nav-item" onclick="showPg('support',this)"><div class="nav-icon">💬</div>Get support</a>
+  </nav>
+  <div class="sb-user">
+    <div class="user-row">
+      <div class="user-av" id="user-av">?</div>
+      <div><div class="user-name" id="user-name">Loading...</div><div class="user-plan" id="user-plan">—</div></div>
+    </div>
+    <button class="logout" onclick="logout()">Sign out</button>
+  </div>
+</div>
+
+<div class="main">
+  <div id="overview" class="pg on">
+    <div class="top-bar">
+      <div class="top-title">MY PROTECTION OVERVIEW</div>
+      <div class="status-pill"><div class="sdot"></div>AI ACTIVE — PROTECTING YOU NOW</div>
+    </div>
+    <div class="trial-banner">
+      <div class="trial-text"><span class="trial-days">30</span> days free remaining — <strong style="color:var(--cyan)">no card needed yet.</strong> After your trial, add a payment method to keep protection active.</div>
+      <button class="upgrade-btn">ADD PAYMENT METHOD</button>
+    </div>
+    <div class="krow">
+      <div class="kc c1"><div class="kl">Threats blocked</div><div class="kv c1" id="k-blocked">0</div><div class="ks">Since you joined</div></div>
+      <div class="kc c2"><div class="kl">Status</div><div class="kv c2" style="font-size:16px;margin-top:4px">PROTECTED</div><div class="ks">All systems active</div></div>
+      <div class="kc c3"><div class="kl">AI adaptations</div><div class="kv c3" id="k-adapt">0</div><div class="ks">Model updates today</div></div>
+      <div class="kc c4"><div class="kl">Response time</div><div class="kv c4">0.3ms</div><div class="ks">Faster than any human</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">RECENT THREATS STOPPED <span class="ctag">LIVE</span></div>
+        <div class="feed">
+          <div class="fi cr"><div class="sv scr">Critical</div><div style="flex:1"><div class="fn">Suspicious login — unknown location</div><div class="fs">IP: 185.220.101.47 · Russia · 2 min ago</div></div><div class="fstat">✓ Blocked</div></div>
+          <div class="fi hi"><div class="sv shi">High</div><div style="flex:1"><div class="fn">Malware in email attachment</div><div class="fs">invoice_2025.exe · Quarantined · 14 min ago</div></div><div class="fstat">✓ Blocked</div></div>
+          <div class="fi md"><div class="sv smd">Medium</div><div style="flex:1"><div class="fn">Unusual network scan on WiFi</div><div class="fs">Unknown device · Watchlisted · 1 hr ago</div></div><div class="fstat">✓ Flagged</div></div>
+          <div class="fi lo"><div class="sv slo">Low</div><div style="flex:1"><div class="fn">Weak password on connected account</div><div class="fs">Social media account · Yesterday</div></div><div class="fstat">⚠ Action needed</div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card-title">AI ENGINE HEALTH</div>
+          <div class="bars">
+            <div class="bar-row"><div class="bar-lbl">Threat detection</div><div class="bar-track"><div class="bar-fill" style="width:97%;background:var(--cyan)"></div></div><div class="bar-val" style="color:var(--cyan)">97%</div></div>
+            <div class="bar-row"><div class="bar-lbl">Behavior reading</div><div class="bar-track"><div class="bar-fill" style="width:94%;background:#7b5ea7"></div></div><div class="bar-val" style="color:#a78bfa">94%</div></div>
+            <div class="bar-row"><div class="bar-lbl">Threat prediction</div><div class="bar-track"><div class="bar-fill" style="width:89%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">89%</div></div>
+            <div class="bar-row"><div class="bar-lbl">Auto-adaptation</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--warn)"></div></div><div class="bar-val" style="color:var(--warn)">∞</div></div>
+          </div>
+          <div class="hsgrid">
+            <div class="hsc"><div class="ht">Intent detection</div><div class="hd">Reads attacker motivation not just patterns</div></div>
+            <div class="hsc"><div class="ht">Evolving memory</div><div class="hd">Learns from every threat — sharpens daily</div></div>
+            <div class="hsc"><div class="ht">Context reasoning</div><div class="hd">Understands the why behind every event</div></div>
+            <div class="hsc"><div class="ht">Predictive strike</div><div class="hd">Blocks threats before they fully form</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">QUICK ACTIONS</div>
+          <div class="act-grid">
+            <button class="act-btn" onclick="showPg('reports',document.querySelectorAll('.nav-item')[2])"><div class="act-icon">📊</div><span class="act-label">VIEW REPORTS</span><div class="act-sub">Monthly summaries</div></button>
+            <button class="act-btn" onclick="showPg('devices',document.querySelectorAll('.nav-item')[3])"><div class="act-icon">📱</div><span class="act-label">MY DEVICES</span><div class="act-sub">Manage connected</div></button>
+            <button class="act-btn" onclick="showPg('support',document.querySelectorAll('.nav-item')[5])"><div class="act-icon">💬</div><span class="act-label">GET HELP</span><div class="act-sub">Talk to support</div></button>
+            <button class="act-btn" onclick="showPg('settings',document.querySelectorAll('.nav-item')[4])"><div class="act-icon">⚙️</div><span class="act-label">SETTINGS</span><div class="act-sub">Alerts & billing</div></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="threats" class="pg">
+    <div class="top-bar"><div class="top-title">FULL THREAT FEED</div><div class="status-pill"><div class="sdot"></div>MONITORING LIVE</div></div>
+    <div class="card">
+      <div class="card-title">ALL THREATS DETECTED AND HANDLED <span class="ctag">LAST 30 DAYS</span></div>
+      <div class="feed" style="gap:8px">
+        <div class="fi cr"><div class="sv scr">Critical</div><div style="flex:1"><div class="fn">Suspicious login — unknown location</div><div class="fs">IP: 185.220.101.47 · Russia · Blocked immediately</div></div><div class="fstat">✓ Blocked</div></div>
+        <div class="fi hi"><div class="sv shi">High</div><div style="flex:1"><div class="fn">Malware in email attachment</div><div class="fs">invoice_2025.exe · Auto-quarantined · No damage</div></div><div class="fstat">✓ Blocked</div></div>
+        <div class="fi hi"><div class="sv shi">High</div><div style="flex:1"><div class="fn">Phishing link clicked in email</div><div class="fs">Fake bank login page · Redirected before damage</div></div><div class="fstat">✓ Blocked</div></div>
+        <div class="fi md"><div class="sv smd">Medium</div><div style="flex:1"><div class="fn">Unknown device on home network</div><div class="fs">MAC: 3C:A6:F6:XX · Watchlisted and isolated</div></div><div class="fstat">✓ Flagged</div></div>
+        <div class="fi md"><div class="sv smd">Medium</div><div style="flex:1"><div class="fn">Password in data breach database</div><div class="fs">Email associated with leaked credential list</div></div><div class="fstat">⚠ Change pw</div></div>
+        <div class="fi lo"><div class="sv slo">Low</div><div style="flex:1"><div class="fn">Outdated app with known vulnerability</div><div class="fs">App v3.1.2 has security patch available</div></div><div class="fstat">⚠ Update app</div></div>
+        <div class="fi lo"><div class="sv slo">Low</div><div style="flex:1"><div class="fn">Weak WiFi security detected</div><div class="fs">Home network uses older WPA protocol</div></div><div class="fstat">⚠ Upgrade WiFi</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="reports" class="pg">
+    <div class="top-bar"><div class="top-title">SECURITY REPORTS</div></div>
+    <div class="card">
+      <div class="card-title">MONTHLY REPORTS — PLAIN ENGLISH, NO JARGON</div>
+      <div class="rep-list">
+        <div class="rep-item"><div class="rep-icon">📄</div><div><div class="rep-name">MAY 2025 SECURITY REPORT</div><div class="rep-meta">47 threats blocked · 0 breaches · All systems normal</div></div><div class="rep-dl">Download PDF →</div></div>
+        <div class="rep-item"><div class="rep-icon">📄</div><div><div class="rep-name">APRIL 2025 SECURITY REPORT</div><div class="rep-meta">32 threats blocked · 0 breaches · 1 action taken</div></div><div class="rep-dl">Download PDF →</div></div>
+        <div class="rep-item" style="opacity:.5"><div class="rep-icon">📄</div><div><div class="rep-name">MARCH 2025 SECURITY REPORT</div><div class="rep-meta">28 threats blocked · 0 breaches · All clear</div></div><div class="rep-dl">Download PDF →</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="devices" class="pg">
+    <div class="top-bar"><div class="top-title">MY DEVICES</div></div>
+    <div class="card">
+      <div class="card-title">PROTECTED DEVICES</div>
+      <div class="dev-list">
+        <div class="dev-item"><div style="font-size:20px">💻</div><div style="flex:1"><div class="fn">Primary Computer</div><div class="fs">Last active: Now · Protected · AI monitoring active</div></div><div class="fstat">✓ Active</div></div>
+        <div class="dev-item"><div style="font-size:20px">📱</div><div style="flex:1"><div class="fn">Mobile Phone</div><div class="fs">Last active: 2 hours ago · Protected · AI monitoring active</div></div><div class="fstat">✓ Active</div></div>
+        <div class="dev-item"><div style="font-size:20px">🌐</div><div style="flex:1"><div class="fn">Home WiFi Network</div><div class="fs">Router monitored · All traffic scanned · Protected</div></div><div class="fstat">✓ Active</div></div>
+      </div>
+      <button class="add-dev-btn">+ ADD DEVICE</button>
+    </div>
+  </div>
+
+  <div id="settings" class="pg">
+    <div class="top-bar"><div class="top-title">SETTINGS</div></div>
+    <div class="card" style="max-width:560px">
+      <div class="set-sec">
+        <div class="set-title">ALERT PREFERENCES</div>
+        <div class="set-row"><div><div class="set-label">Email alerts</div><div class="set-desc">Get notified by email when threats are detected</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="set-row"><div><div class="set-label">SMS alerts</div><div class="set-desc">Text message for critical threats only</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+        <div class="set-row"><div><div class="set-label">Weekly digest</div><div class="set-desc">Plain-English summary every Sunday morning</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="set-row"><div><div class="set-label">Monthly report</div><div class="set-desc">Full security report auto-sent end of month</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <div class="set-sec">
+        <div class="set-title">ACCOUNT</div>
+        <div class="set-row"><div><div class="set-label">Email address</div><div class="set-desc" id="set-email">—</div></div><input type="email" class="set-input" placeholder="Update email"></div>
+        <div class="set-row"><div><div class="set-label">Current plan</div><div class="set-desc" id="set-plan">—</div></div><button class="upgrade-btn">CHANGE PLAN</button></div>
+      </div>
+      <button class="save-btn">SAVE CHANGES</button>
+    </div>
+  </div>
+
+  <div id="support" class="pg">
+    <div class="top-bar"><div class="top-title">GET SUPPORT</div></div>
+    <div class="card" style="max-width:540px">
+      <div class="card-title">TALK TO A REAL PERSON</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:18px">You're not going to a call center. You get direct access to the person who built Jordan Intelligence. Describe your question below and expect a response within a few hours.</div>
+      <select style="width:100%;background:rgba(7,16,37,.8);border:1px solid var(--border);border-radius:7px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'Barlow',sans-serif;outline:none;margin-bottom:12px"><option>I have a question about my protection</option><option>I want to add a device</option><option>I need help understanding an alert</option><option>I want to change my plan</option><option>Billing question</option><option>Something isn't working</option><option>Other</option></select>
+      <textarea style="width:100%;background:rgba(7,16,37,.8);border:1px solid var(--border);border-radius:7px;padding:12px;color:var(--text);font-size:13px;font-family:'Barlow',sans-serif;outline:none;resize:vertical;min-height:110px;margin-bottom:12px" placeholder="Describe your question in plain English — no tech knowledge needed..."></textarea>
+      <button style="background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:12px;border-radius:7px;font-size:14px;font-weight:700;border:1px solid rgba(0,212,255,.2);cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:1px;width:100%;transition:all .2s" onclick="this.textContent='MESSAGE SENT — YOU WILL HEAR BACK SOON ✓';this.style.background='var(--green)';this.style.color='#000'">SEND MESSAGE</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const planNames={personal:'Personal Shield',small:'Business Starter',large:'Business Pro',enterprise:'Enterprise Fortress'};
+const user=JSON.parse(localStorage.getItem('ji_user')||'{}');
+if(user.name){
+  const initials=user.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('user-av').textContent=initials;
+  document.getElementById('user-name').textContent=user.name;
+  document.getElementById('user-plan').textContent=planNames[user.plan]||'Personal Shield';
+  const se=document.getElementById('set-email');const sp=document.getElementById('set-plan');
+  if(se)se.textContent=user.email;if(sp)sp.textContent=planNames[user.plan];
+}
+let blocked=Math.floor(Math.random()*50),adapt=Math.floor(Math.random()*20);
+document.getElementById('k-blocked').textContent=blocked;
+document.getElementById('k-adapt').textContent=adapt;
+setInterval(()=>{
+  if(Math.random()>.6){blocked++;const e=document.getElementById('k-blocked');if(e)e.textContent=blocked;}
+  if(Math.random()>.8){adapt++;const e=document.getElementById('k-adapt');if(e)e.textContent=adapt;}
+},4000);
+function showPg(id,el){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  if(el)el.classList.add('active');
+}
+function logout(){localStorage.removeItem('ji_user');window.location.href='index.html';}
+</script>
+</body>
+</html>
